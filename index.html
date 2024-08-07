@@ -12,7 +12,7 @@
     <!-- Viewport Meta Tag -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta charset="UTF-8">
-    <title>IRiDiuM Glossary</title>
+    <title>Data Checklist</title>
     <!-- Assessment favicon -->
     <link rel="shortcut icon" href="images/Shortcut Logo.png">
     <!-- FontAwesome -->
@@ -51,15 +51,23 @@
             width: 100%;
         }
 
-        .logo {
+      /*  .logo {
             width: 20vw;
             height: auto;
         }
+            */
 
-        .title {
+         #subtitle {
             display: flex;
             align-items: center;
             /* Vertically center align */
+        }
+         #logos img {
+            width: 50%;
+        }
+
+        #subtitle img {
+            width: 100%;
         }
         
         .card-header {
@@ -126,6 +134,18 @@
         #modal-title {
             text-align: left;
         }
+
+         @media (min-width: 768px) {
+            #logos img {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            #logos img {
+                width: 100%;
+            }
+        }
     </style>
     <script>
         function write_to_modal(title, contents) {
@@ -153,8 +173,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6 d-flex align-items-center justify-content-between">
-                        <img class="title img-fluid" src="images/Title.png" alt="Title">
+                    <br>
+                    <div class="col-3" id="logos"><img src="images/fairaware.png">
+                    </div>
+                
+                    <div class="col-9" id="subtitle">
+                        <br><br><br><br><br><br><br><br>
+                        <img src="images/Title.png">
                     </div>
                 </div>
             </div>
@@ -421,7 +446,7 @@
                                     they exhaustive. There is no
                                     "one-size-fits-all" or "off-the-shelf" solution. Organizations should adapt the
                                     modules and questions to their
-                                    particular needs—modifying, removing, or adding new ones where necessary—and,
+                                    particular needs-modifying, removing, or adding new ones where necessary-and,
                                     implementation should be incremental.
                                 </p>
                                 <p>
@@ -496,7 +521,7 @@
                                     to be placed in the short term.
                                 </p>
                                 <p>
-                                    In Round 2, the levels of importance should be adjusted to establish “Round 2”
+                                    In Round 2, the levels of importance should be adjusted to establish "Round 2"
                                     goals. Round 2 goals could target low
                                     hanging fruit and what can be done in the short term without increasing resources,
                                     as well as a few of the most pressing
@@ -510,9 +535,9 @@
                                     levels of the various items, adding
                                     items as necessary, until the final round of implementation when all items would
                                     achieve the level of importance,
-                                    “essential,” and all data will be compliant. At this point, the checklists will have
-                                    evolved from “It's good enough” to
-                                    “Best practices,” and will have achieved uniformity across the organization.
+                                    "essential," and all data will be compliant. At this point, the checklists will have
+                                    evolved from "It's good enough" to
+                                    "Best practices," and will have achieved uniformity across the organization.
                                     Thereafter, checklist modules should be
                                     revised on a regular basis to keep them relevant to evolving realities.
                                 </p>
@@ -573,7 +598,7 @@
                                     2024-08-04]
                                 </p>
                                 <p>
-                                    Google. (n.d.). Google data search—Guidelines for developers. Google Developers.
+                                    Google. (n.d.). Google data searchâ€”Guidelines for developers. Google Developers.
                                     Retrieved November 3, 2018, from
                                     https://developers.google.com/search/docs/data-types/dataset [Accessed 2024-08-04]
                                 </p>
@@ -583,7 +608,7 @@
                                     [Accessed 2024-08-04]
                                 </p>
                                 <p>
-                                    ISO. (n.d.). Geographic information—Metadata—Part 1: Fundamentals
+                                    ISO. (n.d.). Geographic informationâ€”Metadataâ€”Part 1: Fundamentals
                                     (19115-1:2014/Amd.1:2018). International Standards
                                     Organization. Retrieved November 3, 2018, from
                                     https://www.iso.org/obp/ui/fr/#iso:std:73118 [Accessed 2024-08-04]
@@ -601,7 +626,7 @@
                                     https://bigdatawg.nist.gov/_uploadfiles/NIST.SP.1500-10.pdf [Accessed 2024-08-04]
                                 </p>
                                 <p>
-                                    Wickham, H. (2014). Tidy data. Journal of Statistical Software, 59(40), 1–43.
+                                    Wickham, H. (2014). Tidy data. Journal of Statistical Software, 59(40), 1â€“43.
                                     https://doi.org/10.18637/jss.v059.i10
                                     [Accessed 2024-08-04]
                                 </p>
@@ -1508,7 +1533,7 @@
                                     <td class="text-center">1d-5</td>
                                     <td class="text-center 1d">Accessibility</td>
                                     <td class="text-center">2. valuable</td>
-                                    <td class="text-start">Are the data available via an open user licence (i.e., anyone can freely access, use, modify, and share for any purpose—subject, at most, to requirements that preserve provenance and openness [e.g., Creative Commons licence CC0, BY, or BY-SA, or equivalent])?</td>
+                                    <td class="text-start">Are the data available via an open user licence (i.e., anyone can freely access, use, modify, and share for any purposeâ€”subject, at most, to requirements that preserve provenance and openness [e.g., Creative Commons licence CC0, BY, or BY-SA, or equivalent])?</td>
                                     <td class="text-center">
                                         <input type="radio" id="q1d-5a"
                                             name="q1d-5" value="1">
@@ -3212,7 +3237,7 @@
                                 
                                 <tr>
                                     <td class="text-center">2e-1</td>
-                                    <td class="text-center 2e">Geospatial data— additional considerations</td>
+                                    <td class="text-center 2e">Geospatial dataâ€” additional considerations</td>
                                     <td class="text-center">1. essential</td>
                                     <td class="text-start">If the dataset contains latitude/longitude, is the datum provided?</td>
                                     <td class="text-center">
@@ -3236,7 +3261,7 @@
                                 
                                 <tr>
                                     <td class="text-center">2e-2</td>
-                                    <td class="text-center 2e">Geospatial data— additional considerations</td>
+                                    <td class="text-center 2e">Geospatial dataâ€” additional considerations</td>
                                     <td class="text-center">3. desirable</td>
                                     <td class="text-start">Do the metadata include a description of the geospatial coverage?</td>
                                     <td class="text-center">
@@ -3260,7 +3285,7 @@
                                 
                                 <tr>
                                     <td class="text-center">2e-3</td>
-                                    <td class="text-center 2e">Geospatial data— additional considerations</td>
+                                    <td class="text-center 2e">Geospatial dataâ€” additional considerations</td>
                                     <td class="text-center">1. essential</td>
                                     <td class="text-start">Do the metadata include a description of the map projection?</td>
                                     <td class="text-center">
@@ -3284,7 +3309,7 @@
                                 
                                 <tr>
                                     <td class="text-center">2e-4</td>
-                                    <td class="text-center 2e">Geospatial data— additional considerations</td>
+                                    <td class="text-center 2e">Geospatial dataâ€” additional considerations</td>
                                     <td class="text-center">1. essential</td>
                                     <td class="text-start">Do the latitude/longitude match the data description (e.g., land/water, mountain/valley, northern/southern hemisphere)?</td>
                                     <td class="text-center">
@@ -3308,7 +3333,7 @@
                                 
                                 <tr>
                                     <td class="text-center">2e-5</td>
-                                    <td class="text-center 2e">Geospatial data— additional considerations</td>
+                                    <td class="text-center 2e">Geospatial dataâ€” additional considerations</td>
                                     <td class="text-center">1. essential</td>
                                     <td class="text-start">In the case of geospatial data, is the most complete data (e.g., all layers, appendices) provided, even if proprietary?</td>
                                     <td class="text-center">
@@ -3332,7 +3357,7 @@
                                 
                                 <tr>
                                     <td class="text-center">2e-6</td>
-                                    <td class="text-center 2e">Geospatial data— additional considerations</td>
+                                    <td class="text-center 2e">Geospatial dataâ€” additional considerations</td>
                                     <td class="text-center">1. essential</td>
                                     <td class="text-start">In the case of geospatial data, is the format compatible with widely adopted geographic information systems (GIS; e.g., ArcGIS)?</td>
                                     <td class="text-center">
@@ -3356,7 +3381,7 @@
                                 
                                 <tr>
                                     <td class="text-center">2e-7</td>
-                                    <td class="text-center 2e">Geospatial data— additional considerations</td>
+                                    <td class="text-center 2e">Geospatial dataâ€” additional considerations</td>
                                     <td class="text-center">1. essential</td>
                                     <td class="text-start">In the case of geospatial data, is the format developed or endorsed by the Open Geospatial Consortium (OGC; e.g., Geography Markup Language [GML])?</td>
                                     <td class="text-center">
@@ -5570,7 +5595,7 @@
                                 
                                 <tr>
                                     <td class="text-center">5a-1</td>
-                                    <td class="text-center 5a">Computer code— documentation</td>
+                                    <td class="text-center 5a">Computer codeâ€” documentation</td>
                                     <td class="text-center">1. essential</td>
                                     <td class="text-start">Is there a brief explanatory comment at the start of the code?</td>
                                     <td class="text-center">
@@ -5594,7 +5619,7 @@
                                 
                                 <tr>
                                     <td class="text-center">5a-2</td>
-                                    <td class="text-center 5a">Computer code— documentation</td>
+                                    <td class="text-center 5a">Computer codeâ€” documentation</td>
                                     <td class="text-center">1. essential</td>
                                     <td class="text-start">Is the code liberally commented so that a third party can easily understand what was done at each step?</td>
                                     <td class="text-center">
@@ -5618,7 +5643,7 @@
                                 
                                 <tr>
                                     <td class="text-center">5a-3</td>
-                                    <td class="text-center 5a">Computer code— documentation</td>
+                                    <td class="text-center 5a">Computer codeâ€” documentation</td>
                                     <td class="text-center">2. valuable</td>
                                     <td class="text-start">Has the use of comment/uncomment for sections of code to control the program&#39;s behavior been avoided?</td>
                                     <td class="text-center">
@@ -5642,7 +5667,7 @@
                                 
                                 <tr>
                                     <td class="text-center">5a-4</td>
-                                    <td class="text-center 5a">Computer code— documentation</td>
+                                    <td class="text-center 5a">Computer codeâ€” documentation</td>
                                     <td class="text-center">2. valuable</td>
                                     <td class="text-start">Is an overview of the project available online?</td>
                                     <td class="text-center">
@@ -5666,7 +5691,7 @@
                                 
                                 <tr>
                                     <td class="text-center">5a-5</td>
-                                    <td class="text-center 5a">Computer code— documentation</td>
+                                    <td class="text-center 5a">Computer codeâ€” documentation</td>
                                     <td class="text-center">2. valuable</td>
                                     <td class="text-start">Is a shared &#34;to-do&#34; list for the project available online?</td>
                                     <td class="text-center">
@@ -5690,7 +5715,7 @@
                                 
                                 <tr>
                                     <td class="text-center">5a-6</td>
-                                    <td class="text-center 5a">Computer code— documentation</td>
+                                    <td class="text-center 5a">Computer codeâ€” documentation</td>
                                     <td class="text-center">3. desirable</td>
                                     <td class="text-start">Is a description of the communication strategy available online?</td>
                                     <td class="text-center">
@@ -5714,7 +5739,7 @@
                                 
                                 <tr>
                                     <td class="text-center">5a-7</td>
-                                    <td class="text-center 5a">Computer code— documentation</td>
+                                    <td class="text-center 5a">Computer codeâ€” documentation</td>
                                     <td class="text-center">1. essential</td>
                                     <td class="text-start">Are interfaces (inputs and outputs) to code modules well documented?</td>
                                     <td class="text-center">
@@ -5738,7 +5763,7 @@
                                 
                                 <tr>
                                     <td class="text-center">5a-8</td>
-                                    <td class="text-center 5a">Computer code— documentation</td>
+                                    <td class="text-center 5a">Computer codeâ€” documentation</td>
                                     <td class="text-center">1. essential</td>
                                     <td class="text-start">Are all prior assumptions and results of the code described?</td>
                                     <td class="text-center">
@@ -5762,7 +5787,7 @@
                                 
                                 <tr>
                                     <td class="text-center">5a-9</td>
-                                    <td class="text-center 5a">Computer code— documentation</td>
+                                    <td class="text-center 5a">Computer codeâ€” documentation</td>
                                     <td class="text-center">3. desirable</td>
                                     <td class="text-start">Is a checklist created, maintained, and used for saving and sharing changes to the project?</td>
                                     <td class="text-center">
@@ -5786,7 +5811,7 @@
                                 
                                 <tr>
                                     <td class="text-center">5a-10</td>
-                                    <td class="text-center 5a">Computer code— documentation</td>
+                                    <td class="text-center 5a">Computer codeâ€” documentation</td>
                                     <td class="text-center">2. valuable</td>
                                     <td class="text-start">Is there a file called CHANGELOG.txt in the project&#39;s docs subfolder?</td>
                                     <td class="text-center">
@@ -5810,7 +5835,7 @@
                                 
                                 <tr>
                                     <td class="text-center">5a-11</td>
-                                    <td class="text-center 5a">Computer code— documentation</td>
+                                    <td class="text-center 5a">Computer codeâ€” documentation</td>
                                     <td class="text-center">2. valuable</td>
                                     <td class="text-start">Is a README file included with the code?</td>
                                     <td class="text-center">
@@ -6266,7 +6291,7 @@
                                 
                                 <tr>
                                     <td class="text-center">5c-1</td>
-                                    <td class="text-center 5c">Computer code—file organization</td>
+                                    <td class="text-center 5c">Computer codeâ€”file organization</td>
                                     <td class="text-center">3. desirable</td>
                                     <td class="text-start">Is each project in its own directory, which is named after the project?</td>
                                     <td class="text-center">
@@ -6290,9 +6315,9 @@
                                 
                                 <tr>
                                     <td class="text-center">5c-2</td>
-                                    <td class="text-center 5c">Computer code—file organization</td>
+                                    <td class="text-center 5c">Computer codeâ€”file organization</td>
                                     <td class="text-center">3. desirable</td>
-                                    <td class="text-start">Are text documents associated with the project in a ‘documents’ directory?</td>
+                                    <td class="text-start">Are text documents associated with the project in a â€˜documentsâ€™ directory?</td>
                                     <td class="text-center">
                                         <input type="radio" id="q5c-2a"
                                             name="q5c-2" value="1">
@@ -6314,9 +6339,9 @@
                                 
                                 <tr>
                                     <td class="text-center">5c-3</td>
-                                    <td class="text-center 5c">Computer code—file organization</td>
+                                    <td class="text-center 5c">Computer codeâ€”file organization</td>
                                     <td class="text-center">3. desirable</td>
-                                    <td class="text-start">Are the raw data and metadata in a ‘data’ directory?</td>
+                                    <td class="text-start">Are the raw data and metadata in a â€˜dataâ€™ directory?</td>
                                     <td class="text-center">
                                         <input type="radio" id="q5c-3a"
                                             name="q5c-3" value="1">
@@ -6338,9 +6363,9 @@
                                 
                                 <tr>
                                     <td class="text-center">5c-4</td>
-                                    <td class="text-center 5c">Computer code—file organization</td>
+                                    <td class="text-center 5c">Computer codeâ€”file organization</td>
                                     <td class="text-center">3. desirable</td>
-                                    <td class="text-start">Are the files generated during cleanup and analysis in a ‘results’ directory?</td>
+                                    <td class="text-start">Are the files generated during cleanup and analysis in a â€˜resultsâ€™ directory?</td>
                                     <td class="text-center">
                                         <input type="radio" id="q5c-4a"
                                             name="q5c-4" value="1">
@@ -6362,9 +6387,9 @@
                                 
                                 <tr>
                                     <td class="text-center">5c-5</td>
-                                    <td class="text-center 5c">Computer code—file organization</td>
+                                    <td class="text-center 5c">Computer codeâ€”file organization</td>
                                     <td class="text-center">3. desirable</td>
-                                    <td class="text-start">Is the project source code in a ‘source’ directory?</td>
+                                    <td class="text-start">Is the project source code in a â€˜sourceâ€™ directory?</td>
                                     <td class="text-center">
                                         <input type="radio" id="q5c-5a"
                                             name="q5c-5" value="1">
@@ -6386,9 +6411,9 @@
                                 
                                 <tr>
                                     <td class="text-center">5c-6</td>
-                                    <td class="text-center 5c">Computer code—file organization</td>
+                                    <td class="text-center 5c">Computer codeâ€”file organization</td>
                                     <td class="text-center">3. desirable</td>
-                                    <td class="text-start">Are external scripts or compiled programs in a ‘bin’ directory?</td>
+                                    <td class="text-start">Are external scripts or compiled programs in a â€˜binâ€™ directory?</td>
                                     <td class="text-center">
                                         <input type="radio" id="q5c-6a"
                                             name="q5c-6" value="1">
@@ -6410,7 +6435,7 @@
                                 
                                 <tr>
                                     <td class="text-center">5c-7</td>
-                                    <td class="text-center 5c">Computer code—file organization</td>
+                                    <td class="text-center 5c">Computer codeâ€”file organization</td>
                                     <td class="text-center">1. essential</td>
                                     <td class="text-start">Do all filenames reflect their content or function?</td>
                                     <td class="text-center">
@@ -6630,7 +6655,7 @@
                                     <td class="text-center">6a-1</td>
                                     <td class="text-center 6a">Reproducibility</td>
                                     <td class="text-center">2. valuable</td>
-                                    <td class="text-start">Are the data the result of a ‘reproducible’ workflow?</td>
+                                    <td class="text-start">Are the data the result of a â€˜reproducibleâ€™ workflow?</td>
                                     <td class="text-center">
                                         <input type="radio" id="q6a-1a"
                                             name="q6a-1" value="1">
@@ -7725,7 +7750,7 @@
                 Technology, USA. https://www.nist.gov/itl/big-data-nist/big-data-nist-documents/nbdif-version-30-final
             </p>
             <p>
-                Cite as: Chu E, and Austin CC (2024). FAIRER-Aware Data Checklist tool. Hyperlink*******
+                Cite as: Chu E, and Austin CC (2024). FAIRER-Aware Data Checklist tool. https://fairerdata.github.io/FAIRER-Aware-Data-Checklist/
             </p>
         </div>
     </div>
@@ -7735,7 +7760,7 @@
                 <div class="modal-header">
                     <h4 class="modal-title" id="modal-title">
                     </h4>
-                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <button type="button" class="close" data-dismiss="modal">x</button>
                 </div>
                 <div class="modal-body" id="modal-body">
                 </div>
