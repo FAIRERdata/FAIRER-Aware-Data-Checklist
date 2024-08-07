@@ -1,38 +1,18 @@
-# IRIDiuM-Glossary Developer Manual
+# Data Checklist Manual
 
 ## Introduction
 
-This repository contains the IRIDiuM-Glossary, a collection of vocabularies for IRIDiuM.
+This repository contains the Data Checklist.
 
 ## Getting Started
 
 ### Prerequisites
 
-Before you can use the IRIDiuM-Glossary repository, you need to clone the repository and install some Python packages. 
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/yourusername/IRIDiuM-Glossary.git
-```
-
-2. Navigate into the cloned repository:
-
-```bash
-cd IRIDiuM-Glossary
-```
-
-3. Install the required Python packages, `flask` and `pandas`:
-
-```bash
-pip3 install flask pandas
-```
-
 ## Usage
 
 ### Gathering Vocabularies
 
-When adding new vocabularies to the IRIDiuM-Glossary, make sure to format them in the same way as the existing vocabularies in 'data/IRiDiuM.xlsx'. This ensures that the vocabularies can be correctly processed by the application.
+When adding new entries or changes to questions to the Data checklist, make sure to format them in the same way as the existing entries in 'data/Data checklist.xlsx'. This ensures that the entries can be correctly processed by the application.
 
 ### Running the Data API
 
