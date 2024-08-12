@@ -12,9 +12,9 @@
     <!-- Viewport Meta Tag -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta charset="UTF-8">
-    <title>IRiDiuM Glossary</title>
+    <title>Data Checklist</title>
     <!-- Assessment favicon -->
-    <link rel="shortcut icon" href="images/Shortcut Logo.png">
+    <link rel="shortcut icon" href="docs/images/Shortcut Logo.png">
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
     <style>
@@ -51,19 +51,28 @@
             width: 100%;
         }
 
-        .logo {
+        /*  .logo {
             width: 20vw;
             height: auto;
         }
+            */
 
-        .title {
+        #subtitle {
             display: flex;
             align-items: center;
             /* Vertically center align */
         }
-        
+
+        #logos img {
+            width: 100%;
+        }
+
+        #subtitle img {
+            width: 100%;
+        }
+
         .card-header {
-            padding:0px;
+            padding: 0px;
         }
 
         .modal-header,
@@ -102,18 +111,47 @@
             height: 10vh;
         }
 
-        #printButton {
-            font-size: 14px;
-            background-color: white;
+        .colourb {
+            background-image: linear-gradient(hsla(255, 100%, 100%, .2) 100%, transparent 100%)
         }
 
-        #intro-box {
+        .colourc {
+            background-image: linear-gradient(hsla(255, 100%, 100%, .4) 100%, transparent 100%)
+        }
+
+        .colourd {
+            background-image: linear-gradient(hsla(0, 0%, 100%, 0.6) 100%, transparent 100%)
+        }
+
+        .coloure {
+            background-image: linear-gradient(hsla(0, 0%, 100%, 0.8) 100%, transparent 100%)
+        }
+
+        .colourf {
+            background-image: linear-gradient(hsla(0, 0%, 0%, 0.1) 100%, transparent 100%)
+        }
+
+        .colourg {
+            background-image: linear-gradient(hsla(0, 0%, 0%, 0.2) 100%, transparent 100%)
+        }
+
+        #intro-box,
+        #comment-box {
             border-style: solid;
             border-color: #1e3a79;
             border-radius: 15px;
             padding-left: 15px;
             padding-bottom: 10px;
             background-color: #f5f5f5;
+        }
+
+        #comment-box li {
+            padding-right: 18px;
+        }
+
+        .comment-textarea {
+            width: 94%;
+            margin-left: 35px;
         }
 
         #before-intro-box {
@@ -125,6 +163,41 @@
 
         #modal-title {
             text-align: left;
+        }
+
+        @media screen {
+            .noPrint {
+                display: block;
+            }
+
+            .noScreen {
+                display: none;
+            }
+        }
+
+        @media print {
+            @page {
+                size: auto;
+            }
+
+            .noPrint {
+                display: none;
+
+            }
+
+            .noScreen {
+                display: block;
+            }
+
+            .print-page-break {
+                page-break-before: always;
+                /* Ensure proper page breaks */
+            }
+
+            #checklist_start .collapse {
+                display: block !important;
+                height: auto !important;
+            }
         }
     </style>
     <script>
@@ -143,20 +216,106 @@
 </head>
 
 <body>
+    <script>
+        var total_scorelst = new Array({{ categories | length}});
+
+        function update_checklist(table) {
+            const checklist = document.getElementById(table);
+            let module_num = table.split('.')[0];
+            const table_num = Number(module_num.match(/\d+/g));
+            const essential_questions = checklist.querySelectorAll('input[type="radio"][class="1. essential"]');
+
+            const question_set = new Set();
+            let total_score = 0;
+
+            essential_questions.forEach(radioButton => {
+
+                // Check if the radio button is checked
+                question_set.add(radioButton.name);
+
+                if (radioButton.checked) {
+                    // Add the value of the checked radio button to the total score
+                    total_score += parseInt(radioButton.value);
+                }
+            });
+
+            const score_id = document.getElementById("score_" + table);
+            const max_score = question_set.size;
+
+            const final_score = Math.round((total_score / max_score) * 100)
+            score_id.innerHTML = "Your score is " + final_score + "% for the essential " + table + " questions"
+
+            total_scorelst[table_num - 1] = final_score;
+            update_final_score()
+        }
+
+        function update_final_score() {
+            const average = array => array.reduce((a, b) => a + b) / array.length;
+            var final_score = Math.round(average(total_scorelst));
+            const final_score_id = document.getElementById("checklist-score");
+            final_score_id.innerHTML = "Your overall score is " + final_score + "% across all module essential questions";
+        }
+
+        function check_zero_pt_answers() {
+            const essential_questions = document.querySelectorAll('input[type="radio"][class="1. essential"]');
+            var answer_lst = new Array({{ categories | length }}).fill("");
+        essential_questions.forEach(radioButton => {
+            const question_label = radioButton.closest("td").previousElementSibling.innerText.trim();
+            // alert(question_label)
+            const answer_type = radioButton.nextElementSibling.innerText.trim();
+            //  alert(answer_type)
+            if (radioButton.checked) {
+                //  alert(radioButton.name)
+                if (answer_type != "Yes" && answer_type != "Not Applicable") {
+                    let q_num = radioButton.name.split('-')[0];
+                    let module_num = Number(q_num.match(/\d+/g)) - 1;
+
+                    answer_lst[module_num] += ("<li><b>" + question_label +
+                        "</b> currently is answered as <b>" + answer_type + "</b></li>");
+
+                }
+            }
+        });
+        suggestions_string = "";
+        module_names = {{ categories | tojson | safe }}
+        for (let i = 0; i < {{ categories | length}}; i++) {
+            if (answer_lst[i] != "") {
+                suggestions_string += "<h5>" + module_names[i] + "</h5>";
+                suggestions_string += "<ul>" + answer_lst[i] + "</ul>";
+            }
+        }
+        var printed_content = document.getElementById('printed')
+
+        printed_content.innerHTML += suggestions_string;
+        }
+
+        function print_page() {
+            check_zero_pt_answers()
+            // Hide the print button
+            var printButton = document.getElementById("print-button");
+            printButton.style.display = "none";
+            window.print();
+            // Show the print button again
+            printButton.style.display = "block";
+
+        }
+
+    </script>
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 d-flex flex-column justify-content-between">
-                <div class="row">
+                <br>
+                <div class="row" style="margin-left: 5%; margin-right: 5%;">
 
-                    <div class="col-12 d-flex align-items-end justify-content-end">
-                        <button id="printButton"> Print to Excel</button>
+                    <div class="col-3" id="logos"><img src="docs/images/fairaware.png">
+                    </div>
+
+                    <div class="col-9" id="subtitle">
+
+                        <img src="docs/images/Title.png">
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-6 d-flex align-items-center justify-content-between">
-                        <img class="title img-fluid" src="images/Title.png" alt="Title">
-                    </div>
-                </div>
+                <br>
             </div>
         </div>
         <h2 style="color: red;"> UNDER DEVELOPMENT</h2>
@@ -182,9 +341,15 @@
                         <li><a href="https://fairerdata.github.io/FAIRER-Aware-DATA-Assessment/"
                                 target="_blank">FAIRER-Aware-DATA-Assessment</a></li>
                         <li><a href="https://fairerdata.github.io/FAIRER-Aware-REPRODUCIBILITY-Assessment/"
-                                target="_blank">FAIRER-Aware Reproducibility Checklist (v1.0)</a></li>
+                                target="_blank">FAIRER-Aware Reproducibility Checklist</a></li>
+                        <li><a href="https://fairerdata.github.io/FAIRER-Aware-AI-SAFETY-Assessment/" target="_blank">
+                                FAIRER-Aware AI Safety Checklist
+                            </a></li>
                         <li><a href="https://fairerdata.github.io/maDMP-Standard/" target="_blank">Metadata application
                                 profile (MAP) for machine-actionable Data Management Plans (maDMP)</a></li>
+                        <li><a href="https://fairerdata.github.io/IRiDiuM-Glossary/" target="_blank">
+                                Interdisciplinary Research Data Management glossary (IRiDiuM)
+                            </a></li>
                     </ul>
                     </p>
                 </div>
@@ -223,6 +388,8 @@
                         Version 0.1.0 alpha (2024-08-05)
                     </p>
                     <p>
+                        <a href="https://www.niso.org/press-releases/contributor-roles-taxonomy-credit-formalized-ansiniso-standard"
+                            target="_blank">CRediT <i class="fa fa-external-link"></i></a>
                         <a href="" data-toggle="modal" onclick="show_modal('citation')"> Author statement <i
                                 class="fa fa-long-arrow-left"></i></a>
                     </p>
@@ -398,6 +565,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="card">
                         <div class="card-header" id="heading4" data-target="#collapse4" data-toggle="collapse">
                             <h5 class="mb-0">
@@ -421,7 +589,7 @@
                                     they exhaustive. There is no
                                     "one-size-fits-all" or "off-the-shelf" solution. Organizations should adapt the
                                     modules and questions to their
-                                    particular needs—modifying, removing, or adding new ones where necessary—and,
+                                    particular needs-modifying, removing, or adding new ones where necessary-and,
                                     implementation should be incremental.
                                 </p>
                                 <p>
@@ -496,7 +664,7 @@
                                     to be placed in the short term.
                                 </p>
                                 <p>
-                                    In Round 2, the levels of importance should be adjusted to establish “Round 2”
+                                    In Round 2, the levels of importance should be adjusted to establish "Round 2"
                                     goals. Round 2 goals could target low
                                     hanging fruit and what can be done in the short term without increasing resources,
                                     as well as a few of the most pressing
@@ -510,9 +678,9 @@
                                     levels of the various items, adding
                                     items as necessary, until the final round of implementation when all items would
                                     achieve the level of importance,
-                                    “essential,” and all data will be compliant. At this point, the checklists will have
-                                    evolved from “It's good enough” to
-                                    “Best practices,” and will have achieved uniformity across the organization.
+                                    "essential," and all data will be compliant. At this point, the checklists will have
+                                    evolved from "It's good enough" to
+                                    "Best practices," and will have achieved uniformity across the organization.
                                     Thereafter, checklist modules should be
                                     revised on a regular basis to keep them relevant to evolving realities.
                                 </p>
@@ -618,61 +786,228 @@
                 </div>
                 <br>
 
-                <h2>Checklist</h2>
-                {% for category in range(separated_lst | length) %}
-                <button class="btn btn-outline-info btn-block" type="button" data-toggle="collapse" data-target="#collapset{{category}}"
-                    aria-expanded="false" aria-controls="collapset{{category}}">
-                    {{categories[category]}}
-                </button>
-                </p>
-                <div class="collapse show" id="collapset{{category}}">
-                    <div class="card card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th style="width:7%;" class="text-center">{{appendix_headers["Data Checklist Questions"]}}
-                                    </th>
-                                    <th style="width:5%;" class="text-center">{{appendix_headers["Unnamed: 1"]}}</th>
-                                    <th style="width:10%;" class="text-center">{{appendix_headers["Unnamed: 2"]}}</th>
-                                    <th style="width:39%;" class="text-center">{{appendix_headers["Unnamed: 3"]}}</th>
-                                    <th style="width:39%;" class="text-center">{{appendix_headers["Unnamed: 4"]}}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for entry in separated_lst[category] %}
-                                <tr>
-                                    <td class="text-center">{{entry["Data Checklist Questions"]}}</td>
-                                    <td class="text-center {{entry['Data Checklist Questions'][:2]}}">{{entry["Unnamed: 1"]}}</td>
-                                    <td class="text-center">{{entry["Unnamed: 2"]}}</td>
-                                    <td class="text-start">{{entry["Unnamed: 3"]}}</td>
-                                    <td class="text-center">
-                                        <input type="radio" id="q{{entry['Data Checklist Questions']}}a"
-                                            name="q{{entry['Data Checklist Questions']}}" value="1">
-                                        <label for="q{{entry['Data Checklist Questions']}}a">Yes</label> &nbsp;&nbsp;
-                        
-                                        <input type="radio" id="q{{entry['Data Checklist Questions']}}b"
-                                            name="q{{entry['Data Checklist Questions']}}" value="0">
-                                        <label for="q{{entry['Data Checklist Questions']}}b">No</label> &nbsp;&nbsp;
-                        
-                                        <input type="radio" id="q{{entry['Data Checklist Questions']}}c"
-                                            name="q{{entry['Data Checklist Questions']}}" value="0">
-                                        <label for="q{{entry['Data Checklist Questions']}}c">Don't Know</label> &nbsp;&nbsp;
-                        
-                                        <input type="radio" id="q{{entry['Data Checklist Questions']}}d"
-                                            name="q{{entry['Data Checklist Questions']}}" value="1">
-                                        <label for="q{{entry['Data Checklist Questions']}}d">Not Applicable</label>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        
+                <h2>Description of column headers</h2>
+                <div id="accordion2">
+                    <div class="card">
+                        <div class="card-header" id="headingd1" data-target="#collapsed1" data-toggle="collapse">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapsed1"
+                                    aria-expanded="true" aria-controls="collapsed1">
+                                    Category
+                                </button>
+                            </h5>
+                        </div>
+                        <div class="collapse" id="collapsed1">
+                            <div class="card card-body">
+                                The “Category” column contains the names of the 23 modules or sub-modules, which
+                                correspond to those listed in Table 14.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingd2" data-target="#collapsed2" data-toggle="collapse">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapsed2"
+                                    aria-expanded="true" aria-controls="collapsed2">
+                                    Current Priority
+                                </button>
+                            </h5>
+                        </div>
+                        <div class="collapse" id="collapsed2">
+                            <div class="card card-body">
+                                Entries in the “Current Priority” column are based on organizational maturity, “It's
+                                good
+                                enough for now.”
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header" id="headingd3" data-target="#collapsed3" data-toggle="collapse">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapsed3"
+                                    aria-expanded="true" aria-controls="collapsed3">
+                                    Data Checklist Questions
+                                </button>
+                            </h5>
+                        </div>
+                        <div class="collapse" id="collapsed3">
+                            <div class="card card-body">
+                                The “Data Checklist Questions” are potential general and sentinel questions within each
+                                category. Questions are
+                                formulated such that the preferred answer is “yes.”
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingd4" data-target="#collapsed4" data-toggle="collapse">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapsed4"
+                                    aria-expanded="true" aria-controls="collapsed4">
+                                    Answers
+                                </button>
+                            </h5>
+                        </div>
+                        <div class="collapse" id="collapsed4">
+                            <div class="card card-body">
+                                The “Answers” column provides a space for answers to the data checklist questions.
+                                Allowed
+                                answers are: “yes”; “no”; “I
+                                don't know”; or “not applicable” (with “yes” being the preferred answer).
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {% endfor %}
+                <br>
+                <div id="checklist_start">
+                    <h2>Checklist - Click below modules to answer questions</h2>
+                    {% for category in range(separated_lst | length) %}
+                    <button class="btn btn-block text-left"
+                        style="border-color: {{colour_lst[category]}}; background-color: {{colour_lst[category]}};  background-image:linear-gradient(hsla(0, 0%, 100%, 0.6) 100%,transparent 100%);"
+                        type="button" data-toggle="collapse" data-target="#collapset{{category}}" aria-expanded="false"
+                        aria-controls="collapset{{category}}">
+                        <b>{{categories[category].upper()}}</b>
+                    </button>
+
+                    <div class="collapse" id="collapset{{category}}">
+                        <div class="card card-body">
+                            <table id="{{categories[category]}}" class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:7%;" class="text-center">{{appendix_headers["Data Checklist
+                                            Questions"]}}
+                                        </th>
+                                        <th style="width:5%;" class="text-center">{{appendix_headers["Unnamed: 1"]}}
+                                        </th>
+                                        <th style="width:10%;" class="text-center">{{appendix_headers["Unnamed: 2"]}}
+                                        </th>
+                                        <th style="width:39%;" class="text-center">{{appendix_headers["Unnamed: 3"]}}
+                                        </th>
+                                        <th style="width:39%;" class="text-center">{{appendix_headers["Unnamed: 4"]}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for entry in separated_lst[category] %}
+                                    <tr>
+                                        <td class="text-center">{{entry["Data Checklist Questions"]}}</td>
+                                        <td class="text-center colour{{entry['Data Checklist Questions'][:1]}} colour{{entry['Data Checklist Questions'][1:2]}}"
+                                            style="background-color: {{colour_lst[category]}};">
+                                            {{entry["Unnamed: 1"]}}
+                                        </td>
+                                        <td class="text-center">{{entry["Unnamed: 2"]}}</td>
+                                        <td class="text-start">{{entry["Unnamed: 3"]}}</td>
+                                        <td class="text-center">
+                                            <input class="{{entry['Unnamed: 2']}}" type="radio"
+                                                id="q{{entry['Data Checklist Questions']}}a"
+                                                name="q{{entry['Data Checklist Questions']}}" value="1"
+                                                onclick="update_checklist('{{categories[category]}}')">
+                                            <label for="q{{entry['Data Checklist Questions']}}a">Yes</label>
+                                            &nbsp;&nbsp;
+
+                                            <input type="radio" class="{{entry['Unnamed: 2']}}"
+                                                id="q{{entry['Data Checklist Questions']}}b"
+                                                name="q{{entry['Data Checklist Questions']}}" value="0"
+                                                onclick="update_checklist('{{categories[category]}}')">
+                                            <label for="q{{entry['Data Checklist Questions']}}b">No</label> &nbsp;&nbsp;
+
+                                            <input type="radio" class="{{entry['Unnamed: 2']}}"
+                                                id="q{{entry['Data Checklist Questions']}}c"
+                                                name="q{{entry['Data Checklist Questions']}}" value="0"
+                                                onclick="update_checklist('{{categories[category]}}')">
+                                            <label for="q{{entry['Data Checklist Questions']}}c">Don't Know</label>
+                                            &nbsp;&nbsp;
+
+                                            <input type="radio" class="{{entry['Unnamed: 2']}}"
+                                                id="q{{entry['Data Checklist Questions']}}d"
+                                                name="q{{entry['Data Checklist Questions']}}" value="1"
+                                                onclick="update_checklist('{{categories[category]}}')">
+                                            <label for="q{{entry['Data Checklist Questions']}}d">Not Applicable</label>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div id="score_{{categories[category]}}"> Your score is 0% for the essential
+                                {{categories[category]}} questions</div>
+                        </div>
+                        <br>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="pagebreak"></div>
+                <br>
+                <a href="https://github.com/FAIRERdata/FAIRER-Aware-Data-Checklist/blob/main/data/blank_data_checklist.xlsx" download="blank_data_checklist.xlsx" target="_blank">
+                <button id="printButton" class="btn btn-outline-primary" style="font-size:0.7rem">Download Link to Blank Checklist Excel File on Github</button>
+                </a>
+                <br>
+                <button class="btn btn mx-auto d-block" type="button" data-toggle="collapse"
+                    data-target="#collapse_result" aria-expanded="false" aria-controls="collapse_result"
+                    style="border-color:#1e3a79; border-width: 2px;border-radius: 15px;" onclick="update_final_score()">
+                    <h3 style="margin:0;">Click for Results</h3>
+                </button>
+                <div class="collapse" id="collapse_result">
+                    <div class="card card-body">
+                        <div id="comment-box" class="col-md-12">
+                            <h3>Your Notes <i class="far fa-hand-point-left" aria-hidden="true"></i></h3>
+                            <div class="row">
+                                <div id="comment-prompt">
+                                    <ul>
+                                        <li>Add any notes you may have here.
+                                            These notes will be included when you print and save your results to
+                                            your local computer. No information will be saved to our server.
+                                            Feel free to capture any thoughts or insights that you'd like to
+                                            remember or revisit later.
+                                        </li>
+                                    </ul>
+                                </div>
+                                <textarea class="comment-textarea" id="nq1" rows="4"></textarea>
+                            </div>
+                        </div>
+
+                        <script>
+                            // Function to adjust the height of the textarea based on content
+                            function adjustTextareaHeight(textarea) {
+                                textarea.style.height = 'auto'; // Reset the height to auto
+                                textarea.style.height = textarea.scrollHeight + 'px'; // Set the height to the scroll height
+                            }
+
+                            // Get the textarea element
+                            var textarea = document.getElementById('nq1');
+
+
+                            // Attach input event listener to adjust height dynamically
+                            textarea.addEventListener('input', function () {
+                                adjustTextareaHeight(this);
+                            });
+                        </script>
+                        <br>
+                        <center>
+                            <h3 id="checklist-score">Your overall score is 0% across all module essential questions</h3>
+                        </center>
+                        <br>
+
+                        <div class="button-container">
+                            <button id="print-button"
+                                title="Your results will show up in a pop-up window and you will be able to print them."
+                                onclick="print_page()">
+                                <i class="fa fa-print"></i> Print Results
+                            </button> 
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-12" align="center">
+                        <img id="bottom-logo" src="docs/images/FAIRER logo.png" align="center"
+                            style="width:40%" /><br><br>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+
 
     <div id="citation" style="display:none;">
         <div id="citation-title">Author Statement</div>
@@ -690,7 +1025,7 @@
             </p>
 
             <p style="margin-left: 25px;">
-                All views and opinions expressed are those of the co-authors, and do not necessarily reflect the
+                DISCLAIMER: All views and opinions expressed are those of the co-authors, and do not necessarily reflect the
                 official policy or
                 position of their respective employers, or of any government, agency or organization.
             </p>
@@ -701,9 +1036,14 @@
                 Technology, USA. https://www.nist.gov/itl/big-data-nist/big-data-nist-documents/nbdif-version-30-final
             </p>
             <p>
-                Cite as: Chu E, and Austin CC (2024). FAIRER-Aware Data Checklist tool. Hyperlink*******
+                Cite as: Chu E, and Austin CC (2024). FAIRER-Aware Data Checklist tool.
+                https://fairerdata.github.io/FAIRER-Aware-Data-Checklist/
             </p>
         </div>
+    </div>
+
+    <div id="printed" class="noScreen">
+        <h3>Improvement Suggestions</h3>
     </div>
     <div id="modal" class="modal fade custom-modal" role="dialog" aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
@@ -711,7 +1051,7 @@
                 <div class="modal-header">
                     <h4 class="modal-title" id="modal-title">
                     </h4>
-                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <button type="button" class="close" data-dismiss="modal">x</button>
                 </div>
                 <div class="modal-body" id="modal-body">
                 </div>

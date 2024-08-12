@@ -33,27 +33,30 @@ def separate_lists(lst):
     
 
 @app.route('/')
-def glossary():
+
+def data_checklist():
     # Read data from Excel file
     df = pd.read_excel('data/Data checklist.xlsx', sheet_name="DATA CHECKLISTS")
     categories = pd.read_excel('data/Data checklist.xlsx', sheet_name="Data checklist modules")
     categories = categories.iloc[:,0].dropna().to_list()[1:]
-
+    
     # Convert DataFrame to list of dictionaries
     appendix = df.where(pd.notnull(df), '').to_dict(orient='records')
     appendix_headers = appendix.pop(0)
     separated_lst = separate_lists(appendix)
+    colour_lst = ["#e6194B", "#f58231", "#ffe119", "#bfef45", "#3cb44b", "#42d4f4", "#4363d8", "#911eb4", "#f032e6"]
     
     
     # Render the index.html template
-    rendered_html = render_template('template.html', categories=categories, separated_lst=separated_lst, appendix=appendix, appendix_headers=appendix_headers)
-
+    rendered_html = render_template('template.html', colour_lst=colour_lst, categories=categories, separated_lst=separated_lst, appendix=appendix, appendix_headers=appendix_headers)
+    
+    df.to_excel("data/blank_data_checklist.xlsx", index=False, header=False)
     # Ensure the 'docs' folder exists
     if not os.path.exists('docs'):
         os.makedirs('docs')
 
     # Save the rendered HTML to 'docs/index.html'
-    with open('docs/index.html', 'w') as f:
+    with open('index.html', 'w', encoding='utf-8') as f:
         f.write(rendered_html)
 
     return 'Static HTML file generated successfully'
