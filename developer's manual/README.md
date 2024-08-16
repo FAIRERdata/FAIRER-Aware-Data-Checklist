@@ -2,17 +2,34 @@
 
 ## Introduction
 
-This repository contains the Data Checklist.
+This repository contains the Data Checklist. Data checklists are a useful data management tool for data providers and for data repositories, as well as for data stewards and managers who need to approve data without having been involved in their production. The Data Checklist can serve as a preliminary check for essential data do's and don'ts.
 
 ## Getting Started
 
 ### Prerequisites
 
+Before you can use the Data Checklist repository, you need to download the repository and install some Python packages. 
+
+1. Download a ZIP file of the FAIRER-Aware-Data-Checklist repository and extract all files
+
+2. Open the extracted FAIRER-Aware-Data-Checklist folder in VScode or code editor of choice. Make sure the terminal is navigated to the repository folder.
+
+3. Install the required Python packages, `flask`, `pandas`, and `openpyxl`:
+
+```bash
+pip3 install flask pandas
+```
+If the above does not work, try this: 
+```bash
+py -m pip install flask pandas openpxyl
+```
 ## Usage
 
-### Gathering Vocabularies
+### Gathering Entries
 
-When adding new entries or changes to questions to the Data checklist, make sure to format them in the same way as the existing entries in 'data/Data checklist.xlsx'. This ensures that the entries can be correctly processed by the application.
+When adding new entries or changes to questions to the Data checklist, make sure to format them in the same way as the existing entries in 'data/Data checklist.xlsx'. This ensures that the entries can be correctly processed by the application. Particularly order the questions from least to greatest (i.e. 1-9 if 9 is the last module).
+
+If new question modules are added, check if there is a new colour to represent the module in variable `colour_lst` in `data_api.py`.
 
 ### Running the Data API
 
@@ -24,6 +41,10 @@ After you have gathered your vocabularies and formatted them correctly, you can 
 
 ```bash
 python3 data_api.py
+```
+If the above does not work, try:
+```bash
+py data_api.py
 ```
 
 ### Viewing the Generated HTML
