@@ -217,20 +217,27 @@
 
 <body>
     <script>
+        // global variable for the scores of each module in a list
         var total_scorelst = new Array(9);
 
+        // function to update the checklist scores for a specified module (table)
         function update_checklist(table) {
+            // get the specified checklist (module)
             const checklist = document.getElementById(table);
+            // get the module number 
             let module_num = table.split('.')[0];
             const table_num = Number(module_num.match(/\d+/g));
+            // get all essential questions
             const essential_questions = checklist.querySelectorAll('input[type="radio"][class="1. essential"]');
 
+            // initialized question_set which will determine how many total questions per module
             const question_set = new Set();
-            let total_score = 0;
+            let total_score = 0; // initialize user total_score per module
 
+            // go through each essential question
             essential_questions.forEach(radioButton => {
 
-                // Check if the radio button is checked
+                // add question to question_set to get total questions
                 question_set.add(radioButton.name);
 
                 if (radioButton.checked) {
@@ -239,57 +246,79 @@
                 }
             });
 
+            // initialize score_id to replace html to current score
             const score_id = document.getElementById("score_" + table);
+            // max_score is the total amount of questions in this module
             const max_score = question_set.size;
 
+            // each question is worth 1 point divided by total amount of questions
             const final_score = Math.round((total_score / max_score) * 100)
+            // change html to the new score 
             score_id.innerHTML = "Your score is " + final_score + "% for the essential " + table + " questions"
 
+            // enter this module's score to the list of all module scores
             total_scorelst[table_num - 1] = final_score;
+            // update the total final score
             update_final_score()
         }
 
+        // function to update the grand final score which is the average of all module scores
         function update_final_score() {
+            // calculate the average
             const average = array => array.reduce((a, b) => a + b) / array.length;
             var final_score = Math.round(average(total_scorelst));
+            // get the html element and replace the text with the new final score
             const final_score_id = document.getElementById("checklist-score");
             final_score_id.innerHTML = "Your overall score is " + final_score + "% across all module essential questions";
         }
 
+        // function to determine where questions the user answered "no" or "don't know" 
+        // outputs the questions when page is printed 
         function check_zero_pt_answers() {
+            // get all essential questions
             const essential_questions = document.querySelectorAll('input[type="radio"][class="1. essential"]');
+            // initialize empty array with the length that is the total amount of modules
             var answer_lst = new Array(9).fill("");
+
+        // go through each essential question
         essential_questions.forEach(radioButton => {
+            // get question 
             const question_label = radioButton.closest("td").previousElementSibling.innerText.trim();
-            // alert(question_label)
+            // get answer_type e.g. yes, no, etc.
             const answer_type = radioButton.nextElementSibling.innerText.trim();
-            //  alert(answer_type)
             if (radioButton.checked) {
-                //  alert(radioButton.name)
+                // if answer is either no or don't know
                 if (answer_type != "Yes" && answer_type != "Not Applicable") {
+                    // get the module number
                     let q_num = radioButton.name.split('-')[0];
                     let module_num = Number(q_num.match(/\d+/g)) - 1;
 
+                    // add string to appropriate module number slot in the array
                     answer_lst[module_num] += ("<li><b>" + question_label +
                         "</b> currently is answered as <b>" + answer_type + "</b></li>");
-
                 }
             }
         });
+        // initialize string for improvement suggestions (i.e. questions answered no or don't know)
         suggestions_string = "";
-        module_names = ["1. Metadata", "2. Data", "3. Source", "4. Visualization", "5. Software", "6. Reproducibility", "7. Manuscripts", "8. Standards", "9. Confidentiality"]
+        // get all module names
+        module_names = ["1. Metadata", "2. Data", "3. Source", "4. Visualization", "5. Software", "6. Reproducibility", "7. Manuscripts", "8. Standards", "9. Confidentiality"];
+        // format the improvement suggestions to be organized by module
         for (let i = 0; i < 9; i++) {
+            // only works if the user answers the question, unanswered questions do not affect 
+            // improvement suggestions
             if (answer_lst[i] != "") {
                 suggestions_string += "<h5>" + module_names[i] + "</h5>";
                 suggestions_string += "<ul>" + answer_lst[i] + "</ul>";
             }
-        }
-        var printed_content = document.getElementById('printed')
-
+        };
+        var printed_content = document.getElementById('printed');
+        // change the html text to the improvement suggestions for essential questions
         printed_content.innerHTML += suggestions_string;
         }
 
         function print_page() {
+            // improvement suggestions at the button of printed page
             check_zero_pt_answers()
             // Hide the print button
             var printButton = document.getElementById("print-button");
@@ -297,7 +326,6 @@
             window.print();
             // Show the print button again
             printButton.style.display = "block";
-
         }
 
     </script>
@@ -318,7 +346,7 @@
                 <br>
             </div>
         </div>
-        <h2 style="color: red;"> UNDER DEVELOPMENT</h2>
+        
         <div class="row">
 
             <div class="align-items-center justify-content-center" style="margin-left: 5%; margin-right: 5%;">
@@ -11716,8 +11744,10 @@
                 </div>
                 <div class="pagebreak"></div>
                 <br>
-                <a href="https://github.com/FAIRERdata/FAIRER-Aware-Data-Checklist/blob/main/data/blank_data_checklist.xlsx" download="blank_data_checklist.xlsx" target="_blank">
-                <button id="printButton" class="btn btn-outline-primary" style="font-size:0.7rem">Download Link to Blank Checklist Excel File on Github</button>
+                <a href="https://github.com/FAIRERdata/FAIRER-Aware-Data-Checklist/blob/main/data/blank_data_checklist.xlsx"
+                    download="blank_data_checklist.xlsx" target="_blank">
+                    <button id="printButton" class="btn btn-outline-primary" style="font-size:0.7rem">Download Link to
+                        Blank Checklist Excel File on Github</button>
                 </a>
                 <br>
                 <button class="btn btn mx-auto d-block" type="button" data-toggle="collapse"
@@ -11771,7 +11801,7 @@
                                 title="Your results will show up in a pop-up window and you will be able to print them."
                                 onclick="print_page()">
                                 <i class="fa fa-print"></i> Print Results
-                            </button> 
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -11804,7 +11834,8 @@
             </p>
 
             <p style="margin-left: 25px;">
-                DISCLAIMER: All views and opinions expressed are those of the co-authors, and do not necessarily reflect the
+                DISCLAIMER: All views and opinions expressed are those of the co-authors, and do not necessarily reflect
+                the
                 official policy or
                 position of their respective employers, or of any government, agency or organization.
             </p>
