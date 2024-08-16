@@ -64,3 +64,7 @@ If you make changes to any of the code and would like to see those changes refle
 1. After making your changes, save your files and ensure the Flask server is still running.
 2. Open a web browser and navigate to `http://localhost:5000`. Refresh the page.
 3. Open `docs/index.html` in your web browser and refresh the page. You should now see the updated version of the HTML.
+
+### Editing template.html
+
+If needed, new elements for the website (index.html) should be added to template.html. Note that the IDE used may detect errors in template.html due to template variables if the language detection mode is set to html itself. However, the code will run successfully even with these "errors." Changing the language detection mode to Django html or Jinja html will remove the errors.
