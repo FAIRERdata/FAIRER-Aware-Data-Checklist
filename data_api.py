@@ -1,6 +1,6 @@
 '''
  Script name:    data_api.py
- Number lines:   65                    
+ Number lines:   81                    
  Date updated:   8/16/2024        
  Software:       Python 3.11.0 64-bit 
                  Visual Studio Code (1.92.1)
